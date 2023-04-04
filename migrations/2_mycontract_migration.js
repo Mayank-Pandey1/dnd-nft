@@ -1,21 +1,33 @@
-const DungeonsAndDragonsCharacter = artifacts.require('DungeonsAndDragonsCharacter')
-const { LinkToken } = require('@chainlink/contracts/truffle/v0.4/LinkToken')
-const RINKEBY_VRF_COORDINATOR = '0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B'
-const RINKEBY_LINKTOKEN = '0x01be23585060835e02b77ef475b0cc51aa1e0709'
-const RINKEBY_KEYHASH = '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311'
+const DungeonsAndDragonsCharacter = artifacts.require(
+  "DungeonsAndDragonsCharacter"
+);
+const { LinkToken } = require("@chainlink/contracts/truffle/v0.4/LinkToken");
+const SEPOLIA_VRF_COORDINATOR = "0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625";
+const SEPOLIA_LINKTOKEN = "0x779877A7B0D9E8603169DdbD7836e478b4624789";
+const SEPOLIA_KEYHASH =
+  "0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c";
 
 module.exports = async (deployer, network, [defaultAccount]) => {
   // hard coded for rinkeby
-  LinkToken.setProvider(deployer.provider)
-  DungeonsAndDragonsCharacter.setProvider(deployer.provider)
-  if (network.startsWith('rinkeby')) {
-    await deployer.deploy(DungeonsAndDragonsCharacter, RINKEBY_VRF_COORDINATOR, RINKEBY_LINKTOKEN, RINKEBY_KEYHASH)
-    let dnd = await DungeonsAndDragonsCharacter.deployed()
-  } else if (network.startsWith('mainnet')) {
-    console.log("If you're interested in early access to Chainlink VRF on mainnet, please email vrf@chain.link")
+  LinkToken.setProvider(deployer.provider);
+  DungeonsAndDragonsCharacter.setProvider(deployer.provider);
+  if (network.startsWith("sepolia")) {
+    await deployer.deploy(
+      DungeonsAndDragonsCharacter,
+      SEPOLIA_VRF_COORDINATOR,
+      SEPOLIA_LINKTOKEN,
+      SEPOLIA_KEYHASH
+    );
+    let dnd = await DungeonsAndDragonsCharacter.deployed();
+  } else if (network.startsWith("mainnet")) {
+    console.log(
+      "If you're interested in early access to Chainlink VRF on mainnet, please email vrf@chain.link"
+    );
   } else {
-    console.log("Right now only rinkeby works! Please change your network to Rinkeby")
+    console.log(
+      "Right now only sepolia works! Please change your network to Sepolia"
+    );
     // await deployer.deploy(DungeonsAndDragonsCharacter)
     // let dnd = await DungeonsAndDragonsCharacter.deployed()
   }
-}
+};

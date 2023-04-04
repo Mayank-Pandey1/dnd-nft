@@ -1,4 +1,3 @@
-// contracts/DungeonsAndDragonsCharacter.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.6.6;
 
@@ -44,15 +43,19 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
      * LINK token address:                0x01BE23585060835E02B77ef475b0Cc51aA1e0709
      * Key Hash: 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311
      */
-    constructor(address _VRFCoordinator, address _LinkToken, bytes32 _keyhash)
+    constructor(
+        address _VRFCoordinator,
+        address _LinkToken,
+        bytes32 _keyhash
+    )
         public
         VRFConsumerBase(_VRFCoordinator, _LinkToken)
         ERC721("DungeonsAndDragonsCharacter", "D&D")
-    {   
+    {
         VRFCoordinator = _VRFCoordinator;
         LinkToken = _LinkToken;
         keyHash = _keyhash;
-        fee = 0.1 * 10**18; // 0.1 LINK
+        fee = 0.1 * 10 ** 18; // 0.1 LINK
     }
 
     function requestNewRandomCharacter(
@@ -80,16 +83,16 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
         _setTokenURI(tokenId, _tokenURI);
     }
 
-    function fulfillRandomness(bytes32 requestId, uint256 randomNumber)
-        internal
-        override
-    {
+    function fulfillRandomness(
+        bytes32 requestId,
+        uint256 randomNumber
+    ) internal override {
         uint256 newId = characters.length;
         uint256 strength = (randomNumber % 100);
-        uint256 dexterity = ((randomNumber % 10000) / 100 );
-        uint256 constitution = ((randomNumber % 1000000) / 10000 );
-        uint256 intelligence = ((randomNumber % 100000000) / 1000000 );
-        uint256 wisdom = ((randomNumber % 10000000000) / 100000000 );
+        uint256 dexterity = ((randomNumber % 10000) / 100);
+        uint256 constitution = ((randomNumber % 1000000) / 10000);
+        uint256 intelligence = ((randomNumber % 100000000) / 1000000);
+        uint256 wisdom = ((randomNumber % 10000000000) / 100000000);
         uint256 charisma = ((randomNumber % 1000000000000) / 10000000000);
         uint256 experience = 0;
 
@@ -113,39 +116,31 @@ contract DungeonsAndDragonsCharacter is ERC721, VRFConsumerBase, Ownable {
     }
 
     function getNumberOfCharacters() public view returns (uint256) {
-        return characters.length; 
+        return characters.length;
     }
 
-    function getCharacterOverView(uint256 tokenId)
-        public
-        view
-        returns (
-            string memory,
-            uint256,
-            uint256,
-            uint256
-        )
-    {
+    function getCharacterOverView(
+        uint256 tokenId
+    ) public view returns (string memory, uint256, uint256, uint256) {
         return (
             characters[tokenId].name,
-            characters[tokenId].strength + characters[tokenId].dexterity + characters[tokenId].constitution + characters[tokenId].intelligence + characters[tokenId].wisdom + characters[tokenId].charisma,
+            characters[tokenId].strength +
+                characters[tokenId].dexterity +
+                characters[tokenId].constitution +
+                characters[tokenId].intelligence +
+                characters[tokenId].wisdom +
+                characters[tokenId].charisma,
             getLevel(tokenId),
             characters[tokenId].experience
         );
     }
 
-    function getCharacterStats(uint256 tokenId)
+    function getCharacterStats(
+        uint256 tokenId
+    )
         public
         view
-        returns (
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256
-        )
+        returns (uint256, uint256, uint256, uint256, uint256, uint256, uint256)
     {
         return (
             characters[tokenId].strength,
